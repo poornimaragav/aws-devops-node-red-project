@@ -1,13 +1,11 @@
-variable "aws_region" {
-  default = "ap-southeast-2"
+variable "ami_id" {
+  default = "ami-06259b63260eddc13"
 }
-
-variable "ami_id" {}
 
 variable "instance_type" {
   default = "t3.micro"
 }
 
-variable "bucket_name" {}
-
-variable "key_name" {}
+variable "key_name" {
+  default = "my-keypair"
+}
