@@ -1,18 +1,25 @@
-FROM node:24.12.0
+FROM nodered/node-red:latest
 
-# App directory
-WORKDIR /calendar
+# Switch to root to install packages
+USER root
 
-# Copy package files and install dependencies
-COPY package.json ./
-RUN npm install
+# Install useful packages
+RUN apk add --no-cache \
+    bash \
+    git \
+    curl
 
-# Copy app source
-COPY server.js ./
-COPY views ./views
+# Copy Node-RED project files
+COPY app/ /data/
 
-# Expose app port
-EXPOSE 5000
+# Set permissions
+RUN chown -R node-red:node-red /data
 
-# Start app
-CMD ["node", "server.js"]
+# Switch back to Node-RED user
+USER node-red
+
+# Expose Node-RED port
+EXPOSE 1880
+
+# Start Node-RED
+CMD ["npm", "start", "--", "--userDir", "/data"]
